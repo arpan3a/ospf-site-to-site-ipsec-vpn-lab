@@ -1,0 +1,9 @@
+hostname ISP
+interface Serial0/0/0
+ ip address 30.30.30.1 255.255.255.252
+interface Serial0/0/1
+ ip address 20.20.20.1 255.255.255.252
+router ospf 1
+ router-id 3.3.3.3
+ network 20.20.20.0 0.0.0.3 area 0
+ network 30.30.30.0 0.0.0.3 area 0

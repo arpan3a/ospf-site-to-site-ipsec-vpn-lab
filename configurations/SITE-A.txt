@@ -1,0 +1,27 @@
+! Sanitized configuration — lab pre-shared key redacted
+hostname SITE-A
+license boot module c2900 technology-package securityk9
+crypto isakmp policy 10
+ encr aes 256
+ hash sha
+ authentication pre-share
+ group 5
+ lifetime 86400
+crypto isakmp key <REDACTED> address 30.30.30.2
+crypto ipsec transform-set VPN-SET esp-aes esp-sha-hmac
+crypto map VPN-MAP 10 ipsec-isakmp
+ description THIS VPN CONNECTS TO SITE-B
+ set peer 30.30.30.2
+ set transform-set VPN-SET
+ match address 130
+interface GigabitEthernet0/1
+ ip address 192.168.10.1 255.255.255.0
+interface Serial0/0/1
+ ip address 20.20.20.2 255.255.255.252
+ crypto map VPN-MAP
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface GigabitEthernet0/1
+ network 192.168.10.0 0.0.0.255 area 0
+ network 20.20.20.0 0.0.0.3 area 0
+access-list 130 permit ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
